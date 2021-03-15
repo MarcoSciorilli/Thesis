@@ -1,0 +1,41 @@
+password:KccRic11%
+
+ssh manfredi@sshcc1.kek.jp
+ssh manfredi@login.cc.kek.jp
+cd msciorilli_tesi
+b2ee                         
+b2setup release-03-02-04  
+basf2 mvaexample.py  far partire il programma
+basf2_mva_evaluate.py -id mva_cs_id.xml -train ~/../eganiev/analysis/phase3/train.root -data ~/../eganiev/analysis/phase3/test.root -tree tree -o evaluation.pdf
+tutte le volte che faccio un training con diverse variabili,cambio il nome del file XML, 
+editor di testo per lo script
+emacs -nw (-no window) filename
+combinzioni crtl+e/a fine/inizio della linea
+salvare file crtl+x+crtl+s 
+uscire crtl+x+crtl+c
+
+scp manfredi@login.cc.kek.jp:msciorilli_tesi/evaluation.pdf . per copiare file dal primo indirizzo al secondo, in particolare il pdf
+
+Inserisco il corretto file .xml nei programmi BtoDData[...].py
+faccio ls e trovo il file .sh che mi serve
+apro emacs -nw run_mc_prod7394.sh con il nome del .sh
+cambio tutti i # per impostare l'evento che mi interessa studiare, piu' quello che fa partire in parallelo il programma
+visualizzo il testo del programma con  cat run_mc_prod7394.sh 
+creo le directory con i nomi trovati nello script
+faccio partire il programma con ./run_mc_prod7394.sh
+
+per sapere se e' tutto a posto bjobs -sum
+
+
+finiti tutti i .sh entro su root con root -l
+creo la chain del file con f = ROOT.TChain('B0Dpi')
+aggiungo tutti gli output della rete con f.Add('output/BtoDk_7394/*.root')
+unisco tutti i file aggiunti con f.Merge('output/BtoDpiMCcs.root')
+trasferisco infine il file sul mio pc con 
+scp manfredi@login.cc.kek.jp:msciorilli_tesi/output/BtoDpiMCcs.root .
+il nome della variabile di output e' CSMVA
+
+basf2 e' per vedere se va tutto bene
+per far partire come batch lo commento e scommento il submit bsub
+
+
